@@ -1,4 +1,4 @@
 # FirstFlaskApplication
 CRUD operations using Flask and MySQL.
 
-![Screenshot](Sample.png)
+![Screenshot](Sample.PNG)
