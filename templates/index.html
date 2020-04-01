@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Password-Hashes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  </head>
+  <body>
+{% block body %}
+
+<div class="container">
+  <div class="jumbotron jumbotron-fluid">
+    <h2 style="font-family: 'Righteous', cursive;">Top Vulnerable Passwords And Their Hashes</h2><br>
+    <p>Add hashes:
+<button  type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal"><svg class="bi bi-plus" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
+  <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>
+</svg></button></p>
+
+<div id="myModal"class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Hash</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ url_for('addhash') }}" method="POST">
+<div class="form-group">
+<label for="exampleInput1">Plain-Text</label>
+<input type="text" class="form-control" id="exampleInput1" name="plaintext" placeholder="Enter PlainText Password" required>
+</div>
+<div class="form-group">
+<label for="exampleInput2">Md5</label>
+<input type="text" class="form-control" id="exampleInput2" name="md5" placeholder="Enter Md5 Hash" required>
+</div>
+<div class="form-group">
+<label for="exampleInput3">Length</label>
+<input type="text" class="form-control" id="exampleInput3" name="length" placeholder="Enter Length Of The Password" required>
+</div>
+
+<button type="submit" class="btn btn-success">Submit</button>
+</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+
+<thead style="background-color:gray;color:white;">
+    <tr>
+  <th>Id</th>
+  <th>Plaintext</th>
+  <th>Md5</th>
+  <th>Length</th>
+  <th><svg class="bi bi-hammer" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path d="M9.812 1.952a.5.5 0 01-.312.89c-1.671 0-2.852.596-3.616 1.185L4.857 5.073V6.21a.5.5 0 01-.146.354L3.425 7.853a.5.5 0 01-.708 0L.146 5.274a.5.5 0 010-.706l1.286-1.29a.5.5 0 01.354-.146H2.84C4.505 1.228 6.216.862 7.557 1.04a5.009 5.009 0 012.077.782l.178.129z"/>
+  <path fill-rule="evenodd" d="M6.012 3.5a.5.5 0 01.359.165l9.146 8.646A.5.5 0 0115.5 13L14 14.5a.5.5 0 01-.756-.056L4.598 5.297a.5.5 0 01.048-.65l1-1a.5.5 0 01.366-.147z" clip-rule="evenodd"/>
+</svg></th></tr></thead>
+
+    {% for e in secrets %}
+    <tr>
+        <td>{{e.0}}</td>
+        <td>{{e.1}}</td>
+        <td>{{e.2}}</td>
+        <td>{{e.3}}</td>
+        <td>
+
+
+    <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{e.0}}"><svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.266-1.265l1-3a1 1 0 01.242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z" clip-rule="evenodd"/>
+  <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 00.5.5H4v.5a.5.5 0 00.5.5H5v.5a.5.5 0 00.5.5H6v-1.5a.5.5 0 00-.5-.5H5v-.5a.5.5 0 00-.5-.5H3z" clip-rule="evenodd"/>
+</svg></button>
+    <button type="submit" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modaldit{{e.0}}"><svg class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
+  <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
+</svg></button>
+      </td>
+
+    </tr>
+    <div id="modaldit{{e.0}}" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       Are you sure?<br><br>
+       <form action="{{ url_for('delete') }}" method="POST">
+       <input type="hidden" name="id" value="{{e.0}}">
+       <button type="submit" class="btn btn-danger">Delete</button>
+     </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    <div id="modaledit{{e.0}}" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Update</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <form action="{{ url_for('update') }}" method="POST">
+              <input type="hidden" name="id" value="{{e.0}}">
+  <div class="form-group">
+    <label for="exampleInput1">Plain-Text</label>
+    <input type="text" class="form-control" id="exampleInput1" name="plaintext" value="{{e.1}}" required>
+  </div>
+  <div class="form-group">
+    <label for="exampleInput2">Md5</label>
+    <input type="text" class="form-control" id="exampleInput2" name="md5" value="{{e.2}}" required>
+  </div>
+  <div class="form-group">
+    <label for="exampleInput3">Length</label>
+    <input type="text" class="form-control" id="exampleInput3" name="length" value="{{e.3}}" required>
+  </div>
+
+  <button type="submit" class="btn btn-success">Submit</button>
+</form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endfor  %}
+    </tbody>
+</table>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    			  crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</div>
+</div>
+{% endblock %}
+  </body>
+</html>
